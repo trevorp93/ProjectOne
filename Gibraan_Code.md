@@ -2245,16 +2245,210 @@ top10_airline_df
 
 
 ```python
+top10_airline_df.arr_flights = top10_airline_df.arr_flights.astype(int)
+top10_sort = top10_airline_df.sort_values('arr_flights',ascending=False)
+top10 = top10_sort.reset_index()
+del top10['index']
+top10
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>carrier_name</th>
+      <th>arr_flights</th>
+      <th>Arrival_Delay</th>
+      <th>Carrier_Delay</th>
+      <th>Weather_Delay</th>
+      <th>Late_Aircraft_Delay</th>
+      <th>Cancelled</th>
+      <th>Diverted</th>
+      <th>Perc_Delay</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Southwest Airlines Co.</td>
+      <td>8287375</td>
+      <td>1618890</td>
+      <td>485466</td>
+      <td>39800</td>
+      <td>808602</td>
+      <td>88838</td>
+      <td>17623</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Delta Air Lines Inc.</td>
+      <td>5545855</td>
+      <td>832902</td>
+      <td>268459</td>
+      <td>30234</td>
+      <td>233082</td>
+      <td>45635</td>
+      <td>10546</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>American Airlines Inc.</td>
+      <td>4320429</td>
+      <td>847186</td>
+      <td>264836</td>
+      <td>35633</td>
+      <td>265930</td>
+      <td>72234</td>
+      <td>13847</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>SkyWest Airlines Inc.</td>
+      <td>4238423</td>
+      <td>762086</td>
+      <td>177370</td>
+      <td>15509</td>
+      <td>343503</td>
+      <td>86427</td>
+      <td>11172</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ExpressJet Airlines Inc.</td>
+      <td>4036902</td>
+      <td>859585</td>
+      <td>238087</td>
+      <td>16100</td>
+      <td>344256</td>
+      <td>120058</td>
+      <td>12070</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>United Air Lines Inc.</td>
+      <td>3245654</td>
+      <td>619270</td>
+      <td>195630</td>
+      <td>18289</td>
+      <td>193279</td>
+      <td>41782</td>
+      <td>7656</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>US Airways Inc.</td>
+      <td>2246049</td>
+      <td>370891</td>
+      <td>108333</td>
+      <td>7234</td>
+      <td>87152</td>
+      <td>31719</td>
+      <td>3738</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>American Eagle Airlines Inc.</td>
+      <td>1898148</td>
+      <td>380804</td>
+      <td>96412</td>
+      <td>24400</td>
+      <td>137774</td>
+      <td>64165</td>
+      <td>4718</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>JetBlue Airways</td>
+      <td>1687451</td>
+      <td>381454</td>
+      <td>119354</td>
+      <td>6566</td>
+      <td>126631</td>
+      <td>26560</td>
+      <td>4291</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>AirTran Airways Corporation</td>
+      <td>969156</td>
+      <td>148611</td>
+      <td>31783</td>
+      <td>1838</td>
+      <td>58498</td>
+      <td>9817</td>
+      <td>2107</td>
+      <td>15</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
 # Barplot
 sns.set_style("whitegrid")
-ax = sns.barplot(x="Perc_Delay", y="carrier_name", data=top10_airline_df)
-plt.xlabel("Airline")
-plt.ylabel("Percentage of Arrival Delays")
-plt.title("Percentage of Arriving Delays by Airline 2010 to 2016")
+plt.figure(figsize=(12,10))
+ax = sns.barplot(x="Perc_Delay", y="carrier_name", data=top10)
+plt.xlabel("Percentage of Arrival Delays")
+plt.ylabel("Airline")
+plt.title("Percentage of Arriving Delays by Airline 2010 to 2016 Sorted by Most Flights")
 plt.savefig("Figure004.png")
 plt.show()
 ```
 
 
-![png](output_31_0.png)
+![png](output_32_0.png)
+
+
+
+```python
+sns.set(style="whitegrid")
+
+plt.figure(figsize=(15,12))
+
+# Plot the total
+sns.barplot(x="arr_flights", y="carrier_name", data=year_airline_df, label="Total Flights", color="b")
+
+# Plot the delays
+sns.barplot(x="Arrival_Delay", y="carrier_name", data=year_airline_df, label="Total Delays", color="r")
+
+# Add a legend and informative axis label - Need to add info for legend
+ax.legend(loc="upper center")
+plt.xlabel("Number of Flights")
+plt.ylabel("Airline")
+plt.title("Total Flights and Delays by Airline 2010 to 2016")
+
+plt.show()
+```
+
+
+![png](output_33_0.png)
 
